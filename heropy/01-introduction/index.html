@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue: Introduction</title>
+    <!-- vue를 cdn 주소로 연결 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <script defer src="./main.js"></script>
+  </head>
+  <body>
+    <!-- mount로 연결된 요소는 Vue에서 관리되는 영역 -->
+    <!-- 이중중괄호를 사용하면 자바스크립트 코드에 접근할 수 있다 -->
+    <!-- 이벤트 핸들러 onClick을 Vue에서는 v-on:click 또는 축약형으로 @click으로 사용할 수 있다 -->
+    <div id="app">
+      <div>Message: {{ message }}</div>
+      <button @click="message = 'Bye Vue!'">Change Message</button>
+      <button v-on:click="reverseMessage">Reverse Message</button>
+    </div>
+  </body>
+</html>
