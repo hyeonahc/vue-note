@@ -7,13 +7,13 @@
 // 방법 1: 객체 따로 빼주기
 // Vue.createApp(객체이름).mount(HTML요소);
 const Message = {
-  // 반응형 데이터 정의
-  // 아래의 데이터는 HTML문서가 접근할 수 있다
+  // Message의 데이터
   data() {
     return {
       message: 'Hello Vue!',
     };
   },
+  // Message의 메서드
   methods: {
     reverseMessage() {
       this.message = this.message.split('').reverse().join('');
