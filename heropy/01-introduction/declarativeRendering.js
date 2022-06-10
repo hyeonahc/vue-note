@@ -8,6 +8,7 @@
 // Vue.createApp(객체이름).mount(HTML요소);
 const Message = {
   // Message의 데이터
+  // data: function() { ... }을 생략한 형태
   data() {
     return {
       message: 'Hello Vue!',
@@ -15,6 +16,7 @@ const Message = {
   },
   // Message의 메서드
   methods: {
+    // reverseMessage: function() { ... }을 생략한 형태
     reverseMessage() {
       this.message = this.message.split('').reverse().join('');
     },
