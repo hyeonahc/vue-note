@@ -1,3 +1,4 @@
+<!-- 2. 조건문과 반복문 -->
 <template>
   <h1>Conditional statements and loops</h1>
   <h2 @click="increase">{{ count }}</h2>

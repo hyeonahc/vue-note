@@ -1,3 +1,4 @@
+<!-- 1. 선언적 렌더링 -->
 <template>
   <h1>Declarative Rendering</h1>
   <h2 @click="increase">{{ count }}</h2>
