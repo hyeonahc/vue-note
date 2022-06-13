@@ -4,26 +4,47 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vue: Introduction</title>
+    <title>Search Movies</title>
     <!-- vue를 cdn 주소로 연결 -->
     <script src="https://unpkg.com/vue@next"></script>
-    <script defer src="./main.js"></script>
+    <script defer type="module" src="./main.js"></script>
+    <style>
+      .no-image {
+        width: 40px;
+        height: 40px;
+        background-color: lightgray;
+        display: inline-block;
+      }
+    </style>
   </head>
   <body>
     <div id="app">
       <!-- 양방향데이터 사용(v-model): 사용자가 입력한 데이터를 받아 다시 화면에 출력 -->
       <!-- v-on은 @로 대체 가능 (축약 가능) -->
       <!-- v-bind는 아예 생략 가능 -->
-      <input v-model="title" @:keydown.enter="searchMovies(true)" />
+      <input v-model="title" @keydown.enter="searchMovies(true)" />
       <!-- Search 버튼을 눌렀을때는 최초검색이므로 isFirst 파라미터에 true라는 인수를 전달해준다 -->
-      <button @:click="searchMovies(true)">Search</button>
+      <button @click="searchMovies(true)">Search</button>
+      <p>total number of movies: {{ total }}</p>
+      <p>searched number of movies: {{ movies.length }}</p>
+      <p>rest number of movies: {{ total - movies.length }}</p>
       <ul>
-        <li v-for="movie in customMovies" :key="movie.imdbID">
-          <img :src="movie.poster" alt="" />
+        <li v-for="(movie, index) in customMovies" :key="movie.imdbID">
+          <span>{{ index + 1 }}</span>
+          <!-- v-if와 v-else는 나란히 붙어 있어야 한다 -->
+          <img
+            v-if="movie.poster !== 'N/A'"
+            :src="movie.poster"
+            alt=""
+            height="40"
+          />
           {{ movie.title }}
+          <div v-else class="no-image"></div>
         </li>
       </ul>
-      <button v-if="movies.length" @:click="searchMovies">More..</button>
+      <!-- <button v-if="movies.length" @:click="searchMovies()">More..</button> -->
+      <!-- v-show="조건문": false일때 display: none 속성을 부여해주는 디렉티브 -->
+      <div v-show="hasTheRest && showObserver" ref="observer">Loading...</div>
     </div>
   </body>
 </html>
