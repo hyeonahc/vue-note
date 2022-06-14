@@ -1,3 +1,4 @@
+<!-- 5. v-if vs v-show -->
 <template>
   <button @click="handler">Click Me</button>
   <!-- v-show 디렉티브는 template 태그 안에서 사용할 수 없다 -->

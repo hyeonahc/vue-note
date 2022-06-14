@@ -1,3 +1,4 @@
+<!-- 3. v-if v-else-if v-else -->
 <template>
   <button @click="handler">Click Me</button>
   <p>Count: {{ count }}</p>

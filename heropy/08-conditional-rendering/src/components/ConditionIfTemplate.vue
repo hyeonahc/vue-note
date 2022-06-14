@@ -1,3 +1,4 @@
+<!-- 4. v-if와 template -->
 <template>
   <button @click="handler">Click Me</button>
   <template v-if="isShow">
