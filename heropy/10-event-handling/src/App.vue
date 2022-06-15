@@ -18,6 +18,8 @@
   <EventModifierSelf />
   <hr />
   <EventModifierPassive />
+  <hr />
+  <EventHandlingKey />
 </template>
 
 <script>
@@ -31,6 +33,7 @@ import EventModifierStop from './components/EventModifierStop.vue';
 import EventModifierCapture from './components/EventModifierCapture.vue';
 import EventModifierSelf from './components/EventModifierSelf.vue';
 import EventModifierPassive from './components/EventModifierPassive.vue';
+import EventHandlingKey from './components/EventHandlingKey.vue';
 
 export default {
   name: 'App',
@@ -45,6 +48,7 @@ export default {
     EventModifierCapture,
     EventModifierSelf,
     EventModifierPassive,
+    EventHandlingKey,
   },
 };
 </script>
