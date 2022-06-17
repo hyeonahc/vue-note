@@ -1,3 +1,4 @@
+<!-- 1. 컴포넌트 기초 -->
 <template>
   <div :style="{ backgroundColor: color }" :class="{ large }" class="btn">
     <slot></slot>
