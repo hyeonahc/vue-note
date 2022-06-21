@@ -3,6 +3,7 @@
 // vue-router에 있는 createRouter, createWebHashHistory라는 메서드를 import해서 사용해준다
 import { createRouter, createWebHashHistory } from 'vue-router';
 import Home from './Home';
+import Movie from './Movie';
 import About from './About';
 
 export default createRouter({
@@ -18,6 +19,12 @@ export default createRouter({
       // component: 해당 path에 연결할 component
       path: '/',
       component: Home,
+    },
+    {
+      // path: 도메인/movie (https://google.com/movie)
+      // component: 해당 path에 연결할 component
+      path: '/movie',
+      component: Movie,
     },
     {
       // path: 도메인/about (https://google.com/about)
