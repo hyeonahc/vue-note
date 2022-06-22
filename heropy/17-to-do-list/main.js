@@ -1,3 +1,5 @@
+import { nanoid } from 'https://cdn.jsdelivr.net/npm/nanoid/nanoid.js';
+
 const App = {
   data() {
     return {
@@ -13,9 +15,8 @@ const App = {
       }
       this.todos.push({
         title: this.title,
-        id: new Date().getUTCMilliseconds(),
+        id: nanoid(),
       });
-      console.log(this.todos);
       this.title = '';
     },
     deleteTodo(todoToDelete) {
