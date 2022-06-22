@@ -11,6 +11,12 @@
   <body>
     <div id="app">
       <input v-model="title" @keydown.enter="addTodo" />
+      <ul>
+        <li v-for="todo in todos" :key="todo.id">
+          {{ todo.title }}
+          <button @click="deleteTodo(todo)">삭제</button>
+        </li>
+      </ul>
     </div>
   </body>
 </html>

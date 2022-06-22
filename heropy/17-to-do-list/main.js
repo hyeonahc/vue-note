@@ -18,6 +18,10 @@ const App = {
       console.log(this.todos);
       this.title = '';
     },
+    deleteTodo(todoToDelete) {
+      const index = this.todos.findIndex(todo => todo.id === todoToDelete.id);
+      this.todos.splice(index, 1);
+    },
   },
 };
 
