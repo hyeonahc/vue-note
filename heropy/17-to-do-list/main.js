@@ -4,8 +4,6 @@ const App = {
   template: /* HTML */ `
     <input v-model="title" @keydown.enter="addTodo" />
     <ul>
-      <!-- 메서드로 todo.title을 업데이트할때 -->
-      <!-- @update-title="updateTitle(todo, $event)" -->
       <todo-item
         v-for="todo in todos"
         :key="todo.id"
@@ -34,10 +32,6 @@ const App = {
       });
       this.title = '';
     },
-    // 메서드로 todo.title을 업데이트할때
-    // updateTitle(todo, event) {
-    //   todo.title = event;
-    // },
   },
 };
 
@@ -51,11 +45,11 @@ const TodoItem = {
       </template>
       <template v-else>
         <input
-          :value="todo.title"
-          @input="inputTitle"
-          @keydown.enter="offEditMode"
+          :value="title"
+          @input="title = $event.target.value"
+          @keydown.enter="offEditMode(), updateTitle()"
         />
-        <button @click="offEditMode">확인</button>
+        <button @click="offEditMode(), updateTitle()">확인</button>
       </template>
     </li>
   `,
@@ -64,18 +58,20 @@ const TodoItem = {
   },
   data() {
     return {
+      title: '',
       editMode: false,
     };
   },
   methods: {
     onEditMode() {
       this.editMode = true;
+      this.title = this.todo.title;
     },
     offEditMode() {
       this.editMode = false;
     },
-    inputTitle(event) {
-      this.$emit('update-title', event.target.value);
+    updateTitle() {
+      this.$emit('update-title', this.title);
     },
     deleteTodo() {},
   },
