@@ -3,6 +3,7 @@ import { nanoid } from 'https://cdn.skypack.dev/nanoid';
 const App = {
   data() {
     return {
+      title: '',
       todos: [
         { title: 'ABC', id: nanoid() },
         { title: 'XYZ', id: nanoid() },
@@ -39,7 +40,7 @@ const TodoItem = {
         <input
           :value="todo.title"
           @input="inputTitle"
-          @keydown.enter="editTodo(todo)"
+          @keydown.enter="offEditMode"
         />
         <button @click="offEditMode">확인</button>
       </template>
