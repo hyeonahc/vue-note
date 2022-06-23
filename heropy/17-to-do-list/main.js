@@ -9,6 +9,7 @@ const App = {
         :key="todo.id"
         :todo="todo"
         @update-title="todo.title = $event"
+        @delete-todo="deleteTodo"
       ></todo-item>
     </ul>
   `,
@@ -32,7 +33,11 @@ const App = {
       });
       this.title = '';
     },
-    deleteTodo() {},
+    deleteTodo(todoTodelete) {
+      console.log(todoTodelete);
+      const index = this.todos.findIndex(todo => todo.id === todoTodelete.id);
+      this.todos.splice(index, 1);
+    },
   },
 };
 
@@ -88,7 +93,9 @@ const TodoItem = {
     updateTitle() {
       this.$emit('update-title', this.title);
     },
-    deleteTodo() {},
+    deleteTodo() {
+      this.$emit('delete-todo', this.todo);
+    },
   },
 };
 
