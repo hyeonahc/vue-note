@@ -1,6 +1,19 @@
 import { nanoid } from 'https://cdn.skypack.dev/nanoid';
 
 const App = {
+  template: /* HTML */ `
+    <input v-model="title" @keydown.enter="addTodo" />
+    <ul>
+      <!-- 메서드로 todo.title을 업데이트할때 -->
+      <!-- @update-title="updateTitle(todo, $event)" -->
+      <todo-item
+        v-for="todo in todos"
+        :key="todo.id"
+        :todo="todo"
+        @update-title="todo.title = $event"
+      ></todo-item>
+    </ul>
+  `,
   data() {
     return {
       title: '',
