@@ -40,19 +40,24 @@ const TodoItem = {
     <li>
       <template v-if="!editMode">
         <span>{{ todo.title }}</span>
-        <button @click="onEditMode">수정</button>
+        <!-- 이벤트 버블링을 막아주는 이벤트 수식어 stop 사용 -->
+        <!-- 이벤트 버블링: 자식 요소를 선택했을때 부모 요소에 있는 이벤트도 모두 실행되는 현상 -->
+        <button @click.stop="onEditMode">수정</button>
         <button @click="deleteTodo">삭제</button>
       </template>
       <template v-else>
-        <input
-          ref="inputTitle"
-          :value="title"
-          @input="title = $event.target.value"
-          @keydown.enter="offEditMode(), updateTitle()"
-          @keydown.esc="offEditMode"
-        />
-        <button @click="offEditMode(), updateTitle()">확인</button>
-        <button @click="offEditMode">취소</button>
+        <!-- 이벤트 버블링을 막아주는 이벤트 수식어 stop 사용 -->
+        <div @click.stop>
+          <input
+            ref="inputTitle"
+            :value="title"
+            @input="title = $event.target.value"
+            @keydown.enter="offEditMode(), updateTitle()"
+            @keydown.esc="offEditMode"
+          />
+          <button @click="offEditMode(), updateTitle()">확인</button>
+          <button @click="offEditMode">취소</button>
+        </div>
       </template>
     </li>
   `,
@@ -69,6 +74,10 @@ const TodoItem = {
     async onEditMode() {
       this.editMode = true;
       this.title = this.todo.title;
+      // vue문법을 사용한 이벤트가 아닌 수동으로 추가해준 이벤트 핸들러는 수동으로 삭제해주어야한다 (그렇지 않으면 이벤트가 쌓임)
+      window.addEventListener('click', () => {
+        this.offEditMode();
+      });
       // 화면이 바뀐후 할일 지정
       await this.$nextTick();
       this.$refs.inputTitle.focus();
