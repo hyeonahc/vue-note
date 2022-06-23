@@ -32,6 +32,7 @@ const App = {
       });
       this.title = '';
     },
+    deleteTodo() {},
   },
 };
 
@@ -75,15 +76,14 @@ const TodoItem = {
       this.editMode = true;
       this.title = this.todo.title;
       // vue문법을 사용한 이벤트가 아닌 수동으로 추가해준 이벤트 핸들러는 수동으로 삭제해주어야한다 (그렇지 않으면 이벤트가 쌓임)
-      window.addEventListener('click', () => {
-        this.offEditMode();
-      });
+      window.addEventListener('click', this.offEditMode);
       // 화면이 바뀐후 할일 지정
       await this.$nextTick();
       this.$refs.inputTitle.focus();
     },
     offEditMode() {
       this.editMode = false;
+      window.removeEventListener('click', this.offEditMode);
     },
     updateTitle() {
       this.$emit('update-title', this.title);
