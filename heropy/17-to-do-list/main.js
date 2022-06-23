@@ -48,8 +48,10 @@ const TodoItem = {
           :value="title"
           @input="title = $event.target.value"
           @keydown.enter="offEditMode(), updateTitle()"
+          @keydown.esc="offEditMode"
         />
         <button @click="offEditMode(), updateTitle()">확인</button>
+        <button @click="offEditMode">취소</button>
       </template>
     </li>
   `,
