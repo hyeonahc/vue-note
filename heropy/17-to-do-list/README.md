@@ -73,8 +73,9 @@ const TodoItem = {
         <span>{{ todo.title }}</span>
         <!-- 이벤트 버블링을 막아주는 이벤트 수식어 stop 사용 -->
         <!-- 이벤트 버블링: 자식 요소를 선택했을때 부모 요소에 있는 이벤트도 모두 실행되는 현상 -->
-        <button @click.stop="onEditMode">수정</button>
-        <button @click="deleteTodo">삭제</button>
+        <the-button color="orange" @click.stop="onEditMode">수정</the-button>
+        <!-- color라는 props로 dagner라는 값을 the-button 컴포넌트에 전달해주었다 -->
+        <the-button color="danger" @click="deleteTodo">삭제</the-button>
       </template>
       <template v-else>
         <!-- 이벤트 버블링을 막아주는 이벤트 수식어 stop 사용 -->
@@ -86,8 +87,10 @@ const TodoItem = {
             @keydown.enter="offEditMode(), updateTitle()"
             @keydown.esc="offEditMode"
           />
-          <button @click="offEditMode(), updateTitle()">확인</button>
-          <button @click="offEditMode">취소</button>
+          <the-button color="primary" @click="offEditMode(), updateTitle()">
+            확인
+          </the-button>
+          <the-button @click="offEditMode">취소</the-button>
         </div>
       </template>
     </li>
@@ -124,8 +127,48 @@ const TodoItem = {
   },
 };
 
+const TheButton = {
+  template: /* HTML */ `
+    <!-- :style="{ backgroundColor: backgroundColor }" -->
+    <!-- :style의 객체 데이터로 backgroundColor의 값으로 계산된 데이터 backgroundColor가 지정되었다 -->
+    <!-- 객체안에서 key와 value의 값이 같은 경우 한번만 사용한다 -->
+    <!-- <button class="btn" :style="{ backgroundColor }"><slot></slot></button> -->
+    <!-- :style="{ key: value }"로 style은 객체를 가지기 때문에 계산된 값 style()도 switch문을 최종값이 리턴된 객체값이다 -->
+    <button class="btn" :style="style"><slot></slot></button>
+  `,
+  // 상위 컴포넌트 todoItem에서 color라는 props를 전달하므로 props옵션에 등록하고 type을 지정해준다
+  props: {
+    color: {
+      type: String,
+    },
+  },
+  computed: {
+    // template button 요소에 전달해줄 계산된값 style은 props로 받아온 color의 조건을 검색해 알맞은 객체를 리턴해준다
+    // 리턴된 객체에는 style 속성이 정의되어져 있고 button 요소의 스타일로 들어간다
+    style() {
+      switch (this.color) {
+        case 'danger':
+          return {
+            backgroundColor: 'red',
+            color: '#fff',
+          };
+        case 'primary':
+          return {
+            backgroundColor: 'royalblue',
+            color: '#fff',
+          };
+        default:
+          return {
+            backgroundColor: this.color,
+          };
+      }
+    },
+  },
+};
+
 const app = Vue.createApp(App);
 app.component('todo-item', TodoItem);
+app.component('the-button', TheButton);
 app.mount('#app');
 
 ```

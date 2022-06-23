@@ -59,8 +59,8 @@ const TodoItem = {
     <li>
       <template v-if="!editMode">
         <span>{{ todo.title }}</span>
-        <button @click.stop="onEditMode">수정</button>
-        <button @click="deleteTodo">삭제</button>
+        <the-button color="orange" @click.stop="onEditMode">수정</the-button>
+        <the-button color="danger" @click="deleteTodo">삭제</the-button>
       </template>
       <template v-else>
         <div @click.stop>
@@ -71,8 +71,10 @@ const TodoItem = {
             @keydown.enter="offEditMode(), updateTitle()"
             @keydown.esc="offEditMode"
           />
-          <button @click="offEditMode(), updateTitle()">확인</button>
-          <button @click="offEditMode">취소</button>
+          <the-button color="primary" @click="offEditMode(), updateTitle()">
+            확인
+          </the-button>
+          <the-button @click="offEditMode">취소</the-button>
         </div>
       </template>
     </li>
@@ -107,6 +109,38 @@ const TodoItem = {
   },
 };
 
+const TheButton = {
+  template: /* HTML */ `
+    <button class="btn" :style="style"><slot></slot></button>
+  `,
+  props: {
+    color: {
+      type: String,
+    },
+  },
+  computed: {
+    style() {
+      switch (this.color) {
+        case 'danger':
+          return {
+            backgroundColor: 'red',
+            color: '#fff',
+          };
+        case 'primary':
+          return {
+            backgroundColor: 'royalblue',
+            color: '#fff',
+          };
+        default:
+          return {
+            backgroundColor: this.color,
+          };
+      }
+    },
+  },
+};
+
 const app = Vue.createApp(App);
 app.component('todo-item', TodoItem);
+app.component('the-button', TheButton);
 app.mount('#app');
