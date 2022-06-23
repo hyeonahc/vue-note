@@ -45,6 +45,7 @@ const TodoItem = {
       </template>
       <template v-else>
         <input
+          ref="inputTitle"
           :value="title"
           @input="title = $event.target.value"
           @keydown.enter="offEditMode(), updateTitle()"
@@ -65,9 +66,12 @@ const TodoItem = {
     };
   },
   methods: {
-    onEditMode() {
+    async onEditMode() {
       this.editMode = true;
       this.title = this.todo.title;
+      // 화면이 바뀐후 할일 지정
+      await this.$nextTick();
+      this.$refs.inputTitle.focus();
     },
     offEditMode() {
       this.editMode = false;
