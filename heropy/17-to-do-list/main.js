@@ -18,6 +18,10 @@ const App = {
       });
       this.title = '';
     },
+    // 메서드로 todo.title을 업데이트할때
+    // updateTitle(todo, event) {
+    //   todo.title = event;
+    // },
   },
 };
 
@@ -27,9 +31,9 @@ const TodoItem = {
       {{ todo.title }}
       <template v-if="editMode">
         <input
-          v-model="newTitle"
+          :value="todo.title"
+          @input="inputTitle"
           @keydown.enter="editTodo(todo)"
-          ref="newTitleInput"
         />
         <button @click="editTodo(todo)">확인</button>
       </template>
@@ -40,7 +44,6 @@ const TodoItem = {
     </li>
   `,
   props: {
-    todos: Array,
     todo: Object,
   },
   data() {
@@ -56,15 +59,14 @@ const TodoItem = {
     offEditMode() {
       this.editMode = false;
     },
+    inputTitle(event) {
+      this.$emit('update-title', event.target.value);
+    },
     editTodo(todo) {
       todo.title = this.newTitle;
       this.offEditMode();
     },
     deleteTodo() {},
-    mounted() {
-      console.log(this.$refs);
-      this.$refs.newTitleInput.focus();
-    },
   },
 };
 
