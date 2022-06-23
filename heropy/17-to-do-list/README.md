@@ -2,6 +2,7 @@
 
 ```JavaScript
 import { nanoid } from 'https://cdn.skypack.dev/nanoid';
+import Sortable from 'https://cdn.skypack.dev/sortablejs';
 
 const App = {
   template: /* HTML */ `
@@ -35,6 +36,9 @@ const App = {
     // created(): 컴포넌트가 생성된 직후에 실행 (데이터에 접근 가능)
     this.fetchTodos();
   },
+  mounted() {
+    this.initSortable();
+  },
   methods: {
     // created 라이프사이클에 해당 로직을 메서드를 거치지 않고 넣으면 어떤 역할을 하는지 한눈에 알아보기가 쉽지 않다 이를 방지 하기 위해 fetchTodos라는 메서드를 만들어 해당 로직을 넣고 created 라이프사잌르에 메서드를 호출함으로서 해당로직이 어떤역할을 하는지 메서드이름에 명시가 되어 있기 때문에 역할을 한눈에 알아보기가 쉬워진다
     fetchTodos() {
@@ -48,6 +52,11 @@ const App = {
       // 이때 localStroage에 저장할 데이터는 객체(참조형 데이터)가 아닌 문자로 전달해주어야한다
       // 그래서 전달할 데이터를 JSON.stringify를 사용해 객체에서 JSON 형태로 바꿔준다
       localStorage.setItem('todos', JSON.stringify(newValue));
+    },
+    reorderTodos(oldIndex, newIndex) {
+      const clone = { ...this.todos[oldIndex] };
+      this.todos.splice(oldIndex, 1);
+      this.todos.splice(newIndex, 0, clone);
     },
     addTodo() {
       if (!this.title.trim()) {
@@ -64,13 +73,27 @@ const App = {
       this.todos.splice(index, 1);
     },
   },
+  initSortable() {
+    new Sortable(this.$refs.todoList, {
+      handle: 'li .handle', // 드래그 핸들이 될 요소의 선택자를 입력합니다.
+      delay: 50, // 클릭이 밀리는 것을 방지하기 위해 약간의 지연 시간을 추가합니다.
+      animation: 0, // 정렬할 때 애니메이션 속도(ms)를 지정합니다.
+      forceFallback: true, // 다양한 환경의 일관된 Drag&Drop(DnD)을 위해 HTML5 기본 DnD 동작을 무시하고 내장 기능을 사용합니다.
+      // 요소의 DnD가 종료되면 실행할 핸들러(함수)를 지정합니다.
+      onEnd: event => {
+        console.log(event);
+        this.reorderTodos(event.oldIndex, event.newIndex);
+      },
+    });
+  },
 };
 
 const TodoItem = {
   template: /* HTML */ `
     <li>
+      <div className="handle">::</div>
       <template v-if="!editMode">
-        <span>{{ todo.title }}</span>
+        <span class="title">{{ todo.title }}</span>
         <!-- 이벤트 버블링을 막아주는 이벤트 수식어 stop 사용 -->
         <!-- 이벤트 버블링: 자식 요소를 선택했을때 부모 요소에 있는 이벤트도 모두 실행되는 현상 -->
         <the-button color="orange" @click.stop="onEditMode">수정</the-button>

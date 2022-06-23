@@ -1,3 +1,18 @@
+li {
+  display: flex;
+}
+li:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+li .title {
+  flex-grow: 1;
+}
+li.sortable-ghost {
+  background: red;
+}
+/* li.sortable-drag {
+  opacity: 0 !important;
+} */
 button.btn {
   margin: 2px;
   padding: 6px 10px;
