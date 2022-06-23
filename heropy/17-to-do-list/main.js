@@ -1,15 +1,17 @@
-import { nanoid } from 'https://cdn.jsdelivr.net/npm/nanoid/nanoid.js';
+import { nanoid } from 'https://cdn.skypack.dev/nanoid';
 
 const App = {
   data() {
     return {
-      todos: [],
+      todos: [
+        { title: 'ABC', id: nanoid() },
+        { title: 'XYZ', id: nanoid() },
+      ],
     };
   },
   methods: {
     addTodo() {
       if (!this.title.trim()) {
-        this.title = '';
         return;
       }
       this.todos.push({
@@ -28,18 +30,18 @@ const App = {
 const TodoItem = {
   template: /* HTML */ `
     <li>
-      {{ todo.title }}
-      <template v-if="editMode">
+      <template v-if="!editMode">
+        <span>{{ todo.title }}</span>
+        <button @click="onEditMode">수정</button>
+        <button @click="deleteTodo">삭제</button>
+      </template>
+      <template v-else>
         <input
           :value="todo.title"
           @input="inputTitle"
           @keydown.enter="editTodo(todo)"
         />
-        <button @click="editTodo(todo)">확인</button>
-      </template>
-      <template v-else>
-        <button @click="onEditMode">수정</button>
-        <button @click="deleteTodo">삭제</button>
+        <button @click="offEditMode">확인</button>
       </template>
     </li>
   `,
@@ -49,7 +51,6 @@ const TodoItem = {
   data() {
     return {
       editMode: false,
-      newTitle: '',
     };
   },
   methods: {
@@ -61,10 +62,6 @@ const TodoItem = {
     },
     inputTitle(event) {
       this.$emit('update-title', event.target.value);
-    },
-    editTodo(todo) {
-      todo.title = this.newTitle;
-      this.offEditMode();
     },
     deleteTodo() {},
   },
