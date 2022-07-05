@@ -30,8 +30,8 @@ export default createStore({
     },
   },
   // actions: mutations에 선언한 메서드를 가져와 컴포넌트에서 접근할 수 있도록 하는 옵션
-  // actions에서 선언한 데이터는 context라는 파라미터를 가진다
-  // actions: { method(context) { const {state, getters, commit, dispatch,} = context } }
+  // actions에서 선언한 메서드는 context라는 파라미터를 가진다
+  // actions: { method(context) { const { state, getters, commit, dispatch } = context } }
   // state: state에 접근할 수 있는 객체
   // getters: getters에 접근할 수 있는 객체
   // commit: mutations을 호출하는 함수
