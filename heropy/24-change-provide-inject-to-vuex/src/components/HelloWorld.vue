@@ -1,8 +1,4 @@
 <template>
-  <h1>{{ message }}</h1>
-  <button @click="updateMessage">
-    UPDATE MESSAGE
-  </button>
   <h1>{{ count }}</h1>
   <button @click="increase">
     INCREASE + 1
