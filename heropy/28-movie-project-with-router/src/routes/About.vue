@@ -6,3 +6,11 @@
   <!-- About 라우터의 children으로 동록된 컴포넌트가 위치한다 -->
   <RouterView />
 </template>
+
+<script>
+export default {
+  // created() {
+  //   console.log(this.$route.meta)
+  // }
+}
+</script>
