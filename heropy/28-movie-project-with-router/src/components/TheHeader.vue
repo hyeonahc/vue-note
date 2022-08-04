@@ -1,11 +1,18 @@
 <template>
   <header>
-    <RouterLink
-      v-for="nav in navigations"
-      :key="nav.path"
-      :to="nav.path">
-      {{ nav.name }}
-    </RouterLink>
+    <div class="nav nav-pills">
+      <div
+        v-for="nav in navigations"
+        :key="nav.name"
+        class="nav-item">
+        <RouterLink
+          :to="nav.path"
+          active-class="active"
+          class="nav-link">
+          {{ nav.name }}
+        </RouterLink>
+      </div>
+    </div>
   </header>
 </template>
 

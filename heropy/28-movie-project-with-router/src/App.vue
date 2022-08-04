@@ -16,7 +16,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+@import "~/scss/main";
+
 #app {
   height: 3000px
 }
