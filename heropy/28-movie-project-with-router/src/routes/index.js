@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 // ~ === src/components
 import TheHeader from '~/components/TheHeader.vue'
 import Home from './Home.vue'
@@ -11,7 +11,10 @@ import NotFound from './NotFound.vue'
 // 리턴된 결과를 main.js에 등록해서 사용한다
 export default createRouter({
 	// 어떤 모드를 사용할것인지 설정 (1. 해시모드 2. 히스토리모드)
-	history: createWebHistory(), // 히스토리 모드 선택
+	// 해시모드
+	// https://google.com/#/login
+	// 해시 기호를 기준으로 주소가 변경된다
+	history: createWebHashHistory(), // 해시모드 모드 선택
 	scrollBehavior: () => {
 		return {
 			top: 0,
