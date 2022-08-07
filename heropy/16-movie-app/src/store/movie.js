@@ -48,12 +48,11 @@ export default {
 		// dispatch: actions를 호출하는 함수
 		// 2. 두번째 인수: payload 
 		// - 해당 함수가 실행할 때 넘겨줄값을 받아오는 인수 searchMovies(something)
-		async searchMovies({ commit }, payload) {
+		async searchMovies({ state, commit }, payload) {
 			const { title, type, number, year} = payload
 			const OMDB_API_KEY = '7035c60c'
 			const res = await axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=1`)
 			const { Search, totalResults } = res.data
-			console.log(Search, totalResults)
 			// context.methods('메서드이름', payload)
 			commit('updateState', {
 				movies: Search,
@@ -76,7 +75,7 @@ export default {
 					const res = await axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=${page}`)
 					const { Search } = res.data
 					commit('updateState', {
-						movies: Search
+						movies: [...state.movies, ...Search]
 					})
 				}
 			}
