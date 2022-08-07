@@ -26,15 +26,13 @@
     </div>
     <button
       class="btn btn-primary"
-      onClick="apply">
+      @click="apply">
       Apply
     </button>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
 	data() {
 		return {
@@ -66,10 +64,21 @@ export default {
 		}
 	},
 	methods: {
+		// $store의 메서드 두가지
+		// method('저장소이름/함수이름', payload)
+		// 메서드에서 사용하는 저장소 이름은 index.js에 modules의 key값을 가리킨다
+		// 즉 index.js에 modules의 key 이름과 method에서 사용하는 저장소 이름은 같아야한다
+		// payload: 함수로 전달할 인자
+		// 1. commit(): mutations 안에 있는 함수를 실행할때 사용하는 메서드
+		// 2. dispatch(): actions 안에 있는 함수를 실행할때 사용하는 메서드
 		async apply() {
-			const OMDB_API_KEY = '7035c60c'
-			const res = await axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${this.title}&type=${this.type}&y=${this.year}&page=1`)
-			console.log(res)
+			console.log(this.title, this.type, this.number, this.year)
+			this.$store.dispatch('movie/searchMovies', {
+				title: this.title,
+				type: this.type,
+				number: this.number,
+				year: this.year
+			})
 		}
 	}
 }
