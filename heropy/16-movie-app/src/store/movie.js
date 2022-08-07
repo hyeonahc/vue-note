@@ -1,4 +1,5 @@
 import axios from 'axios'
+import _uniqBy from 'lodash/uniqBy'
 
 export default {
 	// namespaced: 해당 store를 module화 해서 index.js 파일에 있는 modules에 등록하기 위해 사용
@@ -54,8 +55,9 @@ export default {
 			const res = await axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=1`)
 			const { Search, totalResults } = res.data
 			// context.methods('메서드이름', payload)
+			// 중복된 id를 가진 영화를 가져오지 않도록 lodash의 uniqBy 기능을 사용해 같은 imdbID가 같은 영화 데이터가 하나만 남도록 필터링해준느 작업을 한다
 			commit('updateState', {
-				movies: Search,
+				movies: _uniqBy(Search, 'imdbID'),
 			})
 
 			// 페이지 추가 요청
@@ -75,7 +77,10 @@ export default {
 					const res = await axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=${page}`)
 					const { Search } = res.data
 					commit('updateState', {
-						movies: [...state.movies, ...Search]
+						movies: [
+							...state.movies,
+							..._uniqBy(Search, 'imdbID')
+						]
 					})
 				}
 			}
