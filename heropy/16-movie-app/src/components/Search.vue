@@ -72,7 +72,6 @@ export default {
 		// 1. commit(): mutations 안에 있는 함수를 실행할때 사용하는 메서드
 		// 2. dispatch(): actions 안에 있는 함수를 실행할때 사용하는 메서드
 		async apply() {
-			console.log(this.title, this.type, this.number, this.year)
 			this.$store.dispatch('movie/searchMovies', {
 				title: this.title,
 				type: this.type,
