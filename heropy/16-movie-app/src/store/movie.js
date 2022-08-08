@@ -50,40 +50,72 @@ export default {
 		// 2. 두번째 인수: payload 
 		// - 해당 함수가 실행할 때 넘겨줄값을 받아오는 인수 searchMovies(something)
 		async searchMovies({ state, commit }, payload) {
-			const { title, type, number, year} = payload
-			const OMDB_API_KEY = '7035c60c'
-			const res = await axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=1`)
-			const { Search, totalResults } = res.data
-			// context.methods('메서드이름', payload)
-			// 중복된 id를 가진 영화를 가져오지 않도록 lodash의 uniqBy 기능을 사용해 같은 imdbID가 같은 영화 데이터가 하나만 남도록 필터링해준느 작업을 한다
-			commit('updateState', {
-				movies: _uniqBy(Search, 'imdbID'),
-			})
-
-			// 페이지 추가 요청
-			const total = parseInt(totalResults, 10) // 38
-			// 한 페이지에 10개의 영화 데이터를 가져오므로 10으로 나눈값이 pageLength가 된다
-			const pageLength = Math.ceil(total / 10) // 4 // 총 4번 요청해야 모든 영화데이터를 불러올수 있음
-
-			// 영화 데이터가 11 이상일 경우에 추가 요청을 할 수 있다
-			// pageLength가 1인경우에는 더이상 추가할 페이지가 없다
-			if(pageLength > 1 ) {
-				// API 처음 요청시에는 page가 1이었지만 두번째 요청에는 page가 2로 업데이트된다
-				for(let page = 2; page <= pageLength; page += 1) {
-					// number: 사용자가 필터에서 선택한 숫자 데이터 10, 20, 30 중 하나로 보여줄 영화데이터 개수를 의미함
-					// 초기 요청시 page는 2로 업데이트되고 요청한 영화 데이터의 수가 10일 경우에는 if 조건문을 만족하므로 반복문이 종료되면서 추가 요청이 발생하지 않는다
-					// number가 10일 경우에는 기본 요청이 이루어지고 number가 20, 30 중 하나일 경우에만 추가 요청이 발생되는 코드다
-					if(page > (number / 10)) break
-					const res = await axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=${page}`)
-					const { Search } = res.data
-					commit('updateState', {
-						movies: [
-							...state.movies,
-							..._uniqBy(Search, 'imdbID')
-						]
-					})
+			try {
+				const res = await _fetchMovie({
+					...payload,
+					page: 1
+				})
+	
+				const { Search, totalResults } = res.data
+				// context.methods('메서드이름', payload)
+				// 중복된 id를 가진 영화를 가져오지 않도록 lodash의 uniqBy 기능을 사용해 같은 imdbID가 같은 영화 데이터가 하나만 남도록 필터링해준느 작업을 한다
+				commit('updateState', {
+					movies: _uniqBy(Search, 'imdbID'),
+				})
+	
+				// 페이지 추가 요청
+				const total = parseInt(totalResults, 10) // 38
+				// 한 페이지에 10개의 영화 데이터를 가져오므로 10으로 나눈값이 pageLength가 된다
+				const pageLength = Math.ceil(total / 10) // 4 // 총 4번 요청해야 모든 영화데이터를 불러올수 있음
+	
+				// 영화 데이터가 11 이상일 경우에 추가 요청을 할 수 있다
+				// pageLength가 1인경우에는 더이상 추가할 페이지가 없다
+				if(pageLength > 1 ) {
+					// API 처음 요청시에는 page가 1이었지만 두번째 요청에는 page가 2로 업데이트된다
+					for(let page = 2; page <= pageLength; page += 1) {
+						// number: 사용자가 필터에서 선택한 숫자 데이터 10, 20, 30 중 하나로 보여줄 영화데이터 개수를 의미함
+						// 초기 요청시 page는 2로 업데이트되고 요청한 영화 데이터의 수가 10일 경우에는 if 조건문을 만족하므로 반복문이 종료되면서 추가 요청이 발생하지 않는다
+						// number가 10일 경우에는 기본 요청이 이루어지고 number가 20, 30 중 하나일 경우에만 추가 요청이 발생되는 코드다
+						if(page > (payload.number / 10)) break
+						const res = await _fetchMovie({
+							...payload,
+							page
+						})
+						const { Search } = res.data
+						commit('updateState', {
+							movies: [
+								...state.movies,
+								..._uniqBy(Search, 'imdbID')
+							]
+						})
+					}
 				}
+			} catch(message) {
+				commit('updateState', {
+					movies: [],
+					message
+				})
 			}
 		}
 	},
 }
+
+function _fetchMovie(payload) {
+	const { title, type, year, page } = payload
+	const OMDB_API_KEY = '7035c60c'
+	const url = `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=${page}`
+	
+	return new Promise((resolve, reject) => {
+		axios.get(url)
+			.then(res => {
+				// console.log(res)	
+				if(res.data.Error) {
+					reject(res.data.Error)
+				}
+				resolve(res)
+			})
+			.catch(err => {
+				reject(err.message)
+			}) 
+	})
+}	
