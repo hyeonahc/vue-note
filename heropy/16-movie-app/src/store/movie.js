@@ -50,8 +50,13 @@ export default {
 		// 2. 두번째 인수: payload 
 		// - 해당 함수가 실행할 때 넘겨줄값을 받아오는 인수 searchMovies(something)
 		async searchMovies({ state, commit }, payload) {
+			// loading이 되고 있는데 사용자가 searchMovies 함수를 또 실행한다면(영화검색을 여러번 요청한다면) 여러번 요청을 방지하기 위해 searchMovies 함수를 종료시킨다
+			// 즉 loading이 되고 있는 상태에서는 영화검색을 요청할 수 없다
+			if(state.loading) return
+
 			commit('updateState', {
-				message: ''
+				message: '',
+				loading: true
 			})
 
 			try {
@@ -98,6 +103,10 @@ export default {
 				commit('updateState', {
 					movies: [],
 					message
+				})
+			} finally {
+				commit('updateState', {
+					loading: false
 				})
 			}
 		}
