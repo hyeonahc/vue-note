@@ -23,7 +23,7 @@ export default createRouter({
     {
       // path: 도메인/movie (https://google.com/movie)
       // component: 해당 path에 연결할 component
-      path: '/movie',
+      path: '/movie/:id',
       component: Movie,
     },
     {
