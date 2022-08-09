@@ -8,7 +8,7 @@ export default {
 	// state: 데이터 (data 옵션과 같은 역할)
 	state: () => ({
 		movies: [],
-		message: '',
+		message: 'Search for the movie title!',
 		loading: false
 	}),
 	// getters: 계산된 state 값 (computed 옵션과 같은 역할)
@@ -50,6 +50,10 @@ export default {
 		// 2. 두번째 인수: payload 
 		// - 해당 함수가 실행할 때 넘겨줄값을 받아오는 인수 searchMovies(something)
 		async searchMovies({ state, commit }, payload) {
+			commit('updateState', {
+				message: ''
+			})
+
 			try {
 				const res = await _fetchMovie({
 					...payload,
@@ -108,7 +112,6 @@ function _fetchMovie(payload) {
 	return new Promise((resolve, reject) => {
 		axios.get(url)
 			.then(res => {
-				// console.log(res)	
 				if(res.data.Error) {
 					reject(res.data.Error)
 				}
