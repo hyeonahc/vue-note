@@ -3,10 +3,7 @@
     <div
       :class="{ 'no-result': !movies.length }"
       class="inner">
-      <div
-        v-if="loading"
-        class="spinner-border text-primary">
-      </div>
+      <Loader v-if="loading" />
       <div
         v-if="message"
         class="message">
@@ -26,11 +23,13 @@
 
 <script>
 import MovieItem from '~/components/MovieItem'
+import Loader from '~/components/Loader.vue'
 
 export default {
 	components: {
-		MovieItem
-	},
+    MovieItem,
+    Loader
+},
 	computed: {
 		movies() {
 			// $ 키워드로 store에 접근, state 값 불러오기, movie 모듈 안에 있는 movies state 값을 리턴
