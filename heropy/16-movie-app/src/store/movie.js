@@ -125,6 +125,7 @@ export default {
 				commit('updateState', {
 					theMovie: res.data
 				})
+				console.log('state.theMovie: ', state.theMovie)
 			} catch(error) {
 				commit('updateState', {
 					theMovie: {}
@@ -140,12 +141,10 @@ export default {
 
 function _fetchMovie(payload) {
 	const { title, type, year, page, id } = payload
-	console.log(id)
 
 	const OMDB_API_KEY = '7035c60c'
 	const url = id ? `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}` : `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=${page}`
-	console.log(url)
-	
+
 	return new Promise((resolve, reject) => {
 		axios.get(url)
 			.then(res => {
