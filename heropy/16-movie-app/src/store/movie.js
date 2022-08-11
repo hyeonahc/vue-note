@@ -125,7 +125,6 @@ export default {
 				commit('updateState', {
 					theMovie: res.data
 				})
-				console.log('state.theMovie: ', state.theMovie)
 			} catch(error) {
 				commit('updateState', {
 					theMovie: {}
