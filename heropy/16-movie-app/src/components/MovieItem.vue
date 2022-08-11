@@ -2,6 +2,10 @@
   <div
     :style="{ backgroundImage: `url(${movie.Poster})` }"
     class="movie">
+    <Loader
+      v-if="imageLoading"
+      :size="1.5"
+      absolute />
     <div class="info">
       <div class="year">
         {{ movie.Year }}
@@ -14,7 +18,12 @@
 </template>
 
 <script>
+import Loader from '~/components/Loader'
+
 export default {
+  components: {
+    Loader
+  },
   props: {
     movie: {
       type: Object,
@@ -22,6 +31,23 @@ export default {
       default: () => ({})
       // 위와 같은 로직
       // default: function() { return {} }
+    }
+  },
+  data() {
+    return {
+      imageLoading: true
+    }
+  },
+  mounted() {
+    this.init()
+  },
+  methods: {
+    async init() {
+      // 비동기로 처리되는 함수 loadImage를 실행하기 위해 async await 키워드를 사용했다
+      // 즉 loadImage 함수에서 리턴된값을 받을때까지 다음줄에 있는 코드는 실행되지 않는다
+      // 함수가 실행된 후 값을 받아오고 다음 코드로 넘어갈 수 있다
+      await this.$loadImage(this.movie.Poster)
+      this.imageLoading = false
     }
   }
 }

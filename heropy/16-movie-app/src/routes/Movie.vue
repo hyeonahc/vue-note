@@ -22,7 +22,11 @@
       class="movie-details">
       <div
         :style="{ backgroundImage: `url(${requestDiffSizeImage(theMovie.Poster)})` }"
-        class="poster"></div>
+        class="poster">
+        <Loader 
+          v-if="imageLoading"
+          absolute />
+      </div>
       <div class="specs">
         <div class="title">
           {{ theMovie.Title }}
@@ -76,7 +80,12 @@ import Loader from '~/components/Loader.vue'
 
 export default {
   components: {
-    Loader,
+    Loader
+  },
+  data() {
+    return {
+      imageLoading: true
+    }
   },
   computed: {
     theMovie() {
@@ -93,7 +102,13 @@ export default {
   },
   methods: {
     requestDiffSizeImage(url, size = 700) {
-      return url.replace('SX300', `SX${size}`)
+      const src = url.replace('SX300', `SX${size}`)
+      // ? async, await 키워드 대신 then 을 사용하는 이유를 모르겠다
+      this.$loadImage(src)
+        .then(() => {
+          this.imageLoading = false
+        })
+      return src
     }
   }
 }
@@ -152,6 +167,7 @@ export default {
     background-color: $gray-200;
     background-size: cover;
     background-position: center;
+    position: relative;
   }
   .specs {
     flex-grow: 1;
