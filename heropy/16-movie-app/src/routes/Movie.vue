@@ -102,6 +102,10 @@ export default {
   },
   methods: {
     requestDiffSizeImage(url, size = 700) {
+      if(!url || url === 'N/A') {
+        this.imageLoading = false
+        return ''
+      }
       const src = url.replace('SX300', `SX${size}`)
       // ? async, await 키워드 대신 then 을 사용하는 이유를 모르겠다
       this.$loadImage(src)
