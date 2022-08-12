@@ -1,6 +1,8 @@
 import axios from 'axios'
 import _uniqBy from 'lodash/uniqBy'
 
+const _defaultMessage = 'Search for the movie title!'
+
 export default {
 	// namespaced: 해당 store를 module화 해서 index.js 파일에 있는 modules에 등록하기 위해 사용
 	// namespaced: true 값으로 설정해 movie.js 파일을 하나의 모듈로 만들어준다
@@ -8,7 +10,7 @@ export default {
 	// state: 데이터 (data 옵션과 같은 역할)
 	state: () => ({
 		movies: [],
-		message: 'Search for the movie title!',
+		message: _defaultMessage,
 		loading: false,
 		theMovie: {}
 	}),
@@ -38,6 +40,8 @@ export default {
 		// 영화 데이터 초기화
 		resetMovies(state) {
 			state.movies = []
+			state.message = _defaultMessage
+			state.loading = false
 		}
 	},
 	// actions 옵션 안에 있는 모든 함수들은 async, await와 같은 키워드 없이도 비동기로 동작한다
