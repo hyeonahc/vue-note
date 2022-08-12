@@ -13,9 +13,12 @@ export default createRouter({
   // https://google.com/#/search
   history: createWebHashHistory(),
   // always scroll to top
-  scrollBehavior() {
-    return { top: 0 }
-  },
+  // 일반함수로 표시
+  // scrollBehavior() {
+  //   return { top: 0 }
+  // },
+  // 화살표함수로 표시
+  scrollBehavior: () => ({ top: 0 }),
   // routes: []
   // 특정 path에 component를 연결해주는 부분
   routes: [
