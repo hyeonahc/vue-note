@@ -24,6 +24,7 @@
 <script>
 import MovieItem from '~/components/MovieItem'
 import Loader from '~/components/Loader.vue'
+import { mapState } from 'vuex'
 
 export default {
 	components: {
@@ -31,16 +32,7 @@ export default {
     Loader
 },
 	computed: {
-		movies() {
-			// $ 키워드로 store에 접근, state 값 불러오기, movie 모듈 안에 있는 movies state 값을 리턴
-			return this.$store.state.movie.movies
-		},
-		message() {
-			return this.$store.state.movie.message
-		},
-		loading() {
-			return this.$store.state.movie.loading
-		}
+		...mapState('movie', ['movies', 'message', 'loading'])
 	}
 }
 </script>

@@ -1,12 +1,11 @@
 <template>
   <div class="about">
     <div class="photo">
-      <Loader
-        v-if="imageLoading"
-        absolute />
-      <img
-        :src="image"
-        :alt="name" />
+      <Loader v-if="imageLoading" absolute />
+      <img :src="image" :alt="name" />
+    </div>
+    <div class="name">
+      {{ name }}
     </div>
     <div>{{ email }}</div>
     <div>{{ blog }}</div>
@@ -15,29 +14,19 @@
 
 <script>
 import Loader from '~/components/Loader'
+import { mapState } from 'vuex'
 
 export default {
   components: {
-    Loader
+    Loader,
   },
   data() {
     return {
-      imageLoading: true
+      imageLoading: true,
     }
   },
   computed: {
-    image() {
-      return this.$store.state.about.image
-    },
-    name() {
-      return this.$store.state.about.name
-    },
-    email() {
-      return this.$store.state.about.email
-    },
-    blog() {
-      return this.$store.state.about.blog
-    },
+    ...mapState('about', ['image', 'name', 'email', 'blog']),
   },
   mounted() {
     this.init()
@@ -46,13 +35,12 @@ export default {
     async init() {
       await this.$loadImage(this.image)
       this.imageLoading = false
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-
 .about {
   text-align: center;
   .photo {
@@ -71,7 +59,7 @@ export default {
   }
   .name {
     font-size: 40px;
-    font-family: "Oswald", sans-serif;
+    font-family: 'Oswald', sans-serif;
     margin-bottom: 20px;
   }
 }
