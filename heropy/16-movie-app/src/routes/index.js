@@ -12,6 +12,10 @@ export default createRouter({
   // hash mode: 특정 url로 이동할때 #과 /가 붙는다
   // https://google.com/#/search
   history: createWebHashHistory(),
+  // always scroll to top
+  scrollBehavior() {
+    return { top: 0 }
+  },
   // routes: []
   // 특정 path에 component를 연결해주는 부분
   routes: [
