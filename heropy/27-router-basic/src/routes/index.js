@@ -3,7 +3,7 @@ import Home from './Home.vue'
 import About from './About.vue'
 import NotFound from './NotFound.vue'
 
-// createStore({ 옵션 })
+// createRouter({ 옵션 })
 export default createRouter({
 	// history 모드로 할 것인지 hash 모드로 할 것인지 지정
 	// history 모드: createWebHistory()
